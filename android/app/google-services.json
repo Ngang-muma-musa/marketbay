@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "710779871262",
+    "project_id": "marketbay-e4a60",
+    "storage_bucket": "marketbay-e4a60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710779871262:android:f8f57964ae8909dbfa4e0f",
+        "android_client_info": {
+          "package_name": "com.example.test_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710779871262-6gv3038f0e540p6rj3r2vrim4inu4lro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDaqpDjRq_2Mqko_ygP-Z2y9Z4G5uzUCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710779871262-6gv3038f0e540p6rj3r2vrim4inu4lro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
