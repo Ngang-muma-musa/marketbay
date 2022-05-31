@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../createStore/createNewstore.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
@@ -16,6 +17,15 @@ class Body extends StatelessWidget {
             text: "My Account",
             icon: "assets/icons/User Icon.svg",
             press: () => {},
+          ),
+          ProfileMenu(
+            text: "Create Store",
+            icon: "assets/icons/Shop Icon.svg",
+            press: () => {
+              print("button pressed"),
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const CreateNewStore())),
+            },
           ),
           ProfileMenu(
             text: "Notifications",

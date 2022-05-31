@@ -5,20 +5,22 @@ import 'package:test_app/components/form_error.dart';
 import 'package:test_app/screens/complete_profile/complete_profile_screen.dart';
 
 import '../../../constants.dart';
+import '../../../firebase/storefunctionality.dart';
 import '../../../size_config.dart';
 
-class SignUpForm extends StatefulWidget {
-  const SignUpForm({Key? key}) : super(key: key);
+class CreateStore extends StatefulWidget {
+  const CreateStore({Key? key}) : super(key: key);
 
   @override
-  _SignUpFormState createState() => _SignUpFormState();
+  _CreateStoreState createState() => _CreateStoreState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _CreateStoreState extends State<CreateStore> {
   final _formKey = GlobalKey<FormState>();
-  String? email;
-  String? password;
-  String? conform_password;
+  String? storeName;
+  String? storemail;
+  String? storeLocation;
+  String? description;
   bool remember = false;
   final List<String?> errors = [];
 
@@ -44,11 +46,13 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: [
-          buildEmailFormField(),
+          buildStoreNameFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(),
+          buildStoreMailFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildConformPassFormField(),
+          buildStoreLocationFormField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildDescriptionFormField(),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
@@ -56,6 +60,7 @@ class _SignUpFormState extends State<SignUpForm> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                creatStore(storeName, storemail, storeLocation, description);
                 // if all are valid then go to success screen
                 Navigator.pushNamed(context, CompleteProfileScreen.routeName);
               }
@@ -66,48 +71,42 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildConformPassFormField() {
+  TextFormField buildStoreNameFormField() {
     return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => conform_password = newValue,
+      onSaved: (newValue) => storeName = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && password == conform_password) {
-          removeError(error: kMatchPassError);
         }
-        conform_password = value;
+        storeName = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kPassNullError);
           return "";
-        } else if ((password != value)) {
+        } else if ((storeName != value)) {
           addError(error: kMatchPassError);
           return "";
         }
         return null;
       },
       decoration: const InputDecoration(
-        labelText: "Add PhoneNumber",
-        hintText: "Enter Phonenumber",
+        labelText: "Add Store Name",
+        hintText: "Enter Store Name",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),
     );
   }
 
-  TextFormField buildPasswordFormField() {
+  TextFormField buildStoreMailFormField() {
     return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => password = newValue,
+      onSaved: (newValue) => storemail = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
         }
-        password = value;
+        storemail = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -120,41 +119,64 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: const InputDecoration(
-        labelText: "Password",
-        hintText: "Enter your password",
+        labelText: "Store Mail",
+        hintText: "Enter Store Mail",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),
     );
   }
 
-  TextFormField buildEmailFormField() {
+  TextFormField buildStoreLocationFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      onSaved: (newValue) => storeLocation = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
         }
-        return null;
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kEmailNullError);
           return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "Store Location",
+        hintText: "Enter Store Location",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildDescriptionFormField() {
+    return TextFormField(
+      onSaved: (newValue) => description = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        }
+        description = value;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kPassNullError);
+          return "";
+        } else if (value.length < 8) {
+          addError(error: kShortPassError);
           return "";
         }
         return null;
       },
       decoration: const InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
+        labelText: "Store Descriptioin",
+        hintText: "Enter Store Description",
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),
     );
   }
