@@ -6,6 +6,7 @@ import 'package:test_app/components/form_error.dart';
 import 'package:test_app/helper/keyboard.dart';
 import 'package:test_app/provider/provider.dart';
 import 'package:test_app/screens/forgot_password/forgot_password_screen.dart';
+import 'package:test_app/screens/home/home_screen.dart';
 import 'package:test_app/screens/login_success/login_success_screen.dart';
 
 import '../../../components/default_button.dart';
@@ -112,7 +113,7 @@ class _SignFormState extends State<SignForm> {
                 Provider.of<SessionProvider>(context, listen: false)
                     .setUid(uid.toString());
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => const LoginSuccessScreen()));
+                    builder: (context) => const HomeScreen()));
               }
             },
           ),

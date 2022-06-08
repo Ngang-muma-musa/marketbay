@@ -5,7 +5,7 @@ Future<void> creatStore(String? storeName, String? storeMail, String? location,
     String? description) async {
   CollectionReference users = FirebaseFirestore.instance.collection('store');
   FirebaseAuth auth = FirebaseAuth.instance;
-  String uid = "awHaoXQclfrLMwbFbDZJ";
+  String uid = auth.currentUser!.uid.toString();
   users.doc(uid).set({
     'storeid': uid,
     'storename': storeName,

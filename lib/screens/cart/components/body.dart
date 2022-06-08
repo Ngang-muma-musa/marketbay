@@ -7,6 +7,8 @@ import '../../../size_config.dart';
 import 'cart_card.dart';
 
 class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+
   @override
   _BodyState createState() => _BodyState();
 }
@@ -37,7 +39,7 @@ class _BodyState extends State<Body> {
               ),
               child: Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   SvgPicture.asset("assets/icons/Trash.svg"),
                 ],
               ),

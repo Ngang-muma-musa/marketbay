@@ -7,6 +7,7 @@ import 'package:test_app/screens/complete_profile/complete_profile_screen.dart';
 import '../../../constants.dart';
 import '../../../firebase/storefunctionality.dart';
 import '../../../size_config.dart';
+import '../../store/store.dart';
 
 class CreateStore extends StatefulWidget {
   const CreateStore({Key? key}) : super(key: key);
@@ -58,12 +59,14 @@ class _CreateStoreState extends State<CreateStore> {
           DefaultButton(
             text: "Continue",
             press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                creatStore(storeName, storemail, storeLocation, description);
-                // if all are valid then go to success screen
-                Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-              }
+              // if (_formKey.currentState!.validate()) {
+              //   _formKey.currentState!.save();
+              //   creatStore(storeName, storemail, storeLocation, description);
+              //   // if all are valid then go to success screen
+              //   Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+              // }
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const Store()));
             },
           ),
         ],
