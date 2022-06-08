@@ -1,11 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:test_app/components/custom_surfix_icon.dart';
 import 'package:test_app/components/default_button.dart';
 import 'package:test_app/components/form_error.dart';
-import 'package:test_app/screens/complete_profile/complete_profile_screen.dart';
-
+// import 'package:test_app/screens/complete_profile/complete_profile_screen.dart';
+import '../../../provider/provider.dart';
 import '../../../constants.dart';
+import '../../../firebase/userfunctionality.dart';
 import '../../../size_config.dart';
+import '../../home/home_screen.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -15,10 +19,31 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  Future<User?> registerUsingEmailPassword(
+      {required String? email,
+      required String? password,
+      required String? userName,
+      required String? phoneNumber,
+      required BuildContext context}) async {
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email!, password: password!)
+        .then((value) {
+      createuser(userName, email, phoneNumber);
+      FirebaseAuth auth = FirebaseAuth.instance;
+      String uid = auth.currentUser!.uid.toString();
+      Provider.of<SessionProvider>(context, listen: false)
+          .setUid(uid.toString());
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomeScreen()));
+    });
+    return null;
+  }
+
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
-  String? conform_password;
+  String? phoneNumber;
+  String? userName;
   bool remember = false;
   final List<String?> errors = [];
 
@@ -46,18 +71,29 @@ class _SignUpFormState extends State<SignUpForm> {
         children: [
           buildEmailFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(),
+          builduserName(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildConformPassFormField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildPasswordFormField(),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
             text: "Continue",
-            press: () {
+            press: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                // createuser(storeName, storemail, storeLocation, description);
+              }
+              User? user = await registerUsingEmailPassword(
+                  email: email,
+                  password: password,
+                  userName: userName,
+                  phoneNumber: phoneNumber,
+                  context: context);
+              if (user != null) {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const HomeScreen()));
               }
             },
           ),
@@ -68,22 +104,16 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildConformPassFormField() {
     return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => conform_password = newValue,
+      onSaved: (newValue) => phoneNumber = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && password == conform_password) {
-          removeError(error: kMatchPassError);
         }
-        conform_password = value;
+        phoneNumber = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kPassNullError);
-          return "";
-        } else if ((password != value)) {
-          addError(error: kMatchPassError);
           return "";
         }
         return null;
@@ -92,7 +122,32 @@ class _SignUpFormState extends State<SignUpForm> {
         labelText: "Add PhoneNumber",
         hintText: "Enter Phonenumber",
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
+      ),
+    );
+  }
+
+  TextFormField builduserName() {
+    return TextFormField(
+      onSaved: (newValue) => userName = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        }
+        userName = value;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kPassNullError);
+          return "";
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "Add Username",
+        hintText: "Enter Username",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
       ),
     );
   }
@@ -138,7 +193,7 @@ class _SignUpFormState extends State<SignUpForm> {
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
-        return null;
+        email = value;
       },
       validator: (value) {
         if (value!.isEmpty) {

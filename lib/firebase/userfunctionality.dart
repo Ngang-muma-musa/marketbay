@@ -1,16 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<void> createuser(String userName, String email, int phoneNumber) async {
+Future<void> createuser(
+    String? userName, String? email, String? phoneNumber) async {
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
   FirebaseAuth auth = FirebaseAuth.instance;
   String uid = auth.currentUser!.uid.toString();
-  users.doc(uid).set({
-    'uid': uid,
-    'username': userName,
-    'email': email,
-    'phoneNumber': phoneNumber
-  });
+  users
+      .doc(uid)
+      .set({'username': userName, 'email': email, 'phoneNumber': phoneNumber});
   return;
 }
 
