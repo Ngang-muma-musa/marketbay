@@ -8,24 +8,15 @@ import 'package:test_app/models/Cart.dart';
 import '../../../size_config.dart';
 import 'section_title.dart';
 
-// create StatefulWidget PopularProducts
-class PopularProducts extends StatefulWidget {
-  const PopularProducts({Key? key}) : super(key: key);
+class PopularProducts extends StatelessWidget {
+  const PopularProducts({
+    Key? key,
+    required this.products,
+    required this.cart,
+  }) : super(key: key);
 
-  @override
-  _PopularProducts createState() => _PopularProducts();
-}
-
-class _PopularProducts extends State<PopularProducts> {
-  List<Product> _products = <Product>[];
-
-  List<Cart> _cardList = <Cart>[];
-
-  @override
-  void initState() {
-    super.initState();
-    _populateProducts();
-  }
+  final List<Product> products;
+  final List<Cart> cart;
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +33,12 @@ class _PopularProducts extends State<PopularProducts> {
           child: Row(
             children: [
               ...List.generate(
-                _products.length,
+                demoProducts.length,
                 (index) {
-                  if (_products[index].isPopular) {
-                    return ProductCard(product: _products[index], cart: _cardList);
+                  if (demoProducts[index].isPopular) {
+                    return ProductCard(product: products[index], cart: cart);
                   }
+
                   return const SizedBox
                       .shrink(); // here by default width and height is 0
                 },
@@ -58,11 +50,5 @@ class _PopularProducts extends State<PopularProducts> {
       ],
     );
   }
-
-  void _populateProducts() {
-    var list = demoProducts;
-    setState(() {
-      _products = list;
-    });
-  }
 }
+

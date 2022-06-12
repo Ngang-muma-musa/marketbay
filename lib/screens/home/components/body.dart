@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/models/Cart.dart';
+import 'package:test_app/models/Product.dart';
 
 import '../../../size_config.dart';
 import 'categories.dart';
@@ -7,7 +9,24 @@ import 'home_header.dart';
 import 'popular_product.dart';
 import 'special_offers.dart';
 
-class Body extends StatelessWidget {
+// stateful widget
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  List<Product> _products = <Product>[];
+
+  List<Cart> _cardList = <Cart>[];
+
+  @override
+  void initState() {
+    super.initState();
+    _populateProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,11 +40,18 @@ class Body extends StatelessWidget {
             Categories(),
             SpecialOffers(),
             SizedBox(height: getProportionateScreenWidth(30)),
-            PopularProducts(),
+            PopularProducts(products: _products, cart: _cardList),
             SizedBox(height: getProportionateScreenWidth(30)),
           ],
         ),
       ),
     );
+  }
+
+  void _populateProducts() {
+    var list = demoProducts;
+    setState(() {
+      _products = list;
+    });
   }
 }
