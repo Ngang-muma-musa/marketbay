@@ -10,21 +10,20 @@ class CartScreen extends StatelessWidget {
 
   const CartScreen({
     Key? key,
-    required this.cart,
   }) : super(key: key);
-
-  final List<Cart> cart;
 
   @override
   Widget build(BuildContext context) {
+    final CartScreenArguments agrs =
+        ModalRoute.of(context)!.settings.arguments as CartScreenArguments;
     return Scaffold(
-      appBar: buildAppBar(context),
-      body: const Body(),
+      appBar: buildAppBar(context, agrs),
+      body: Body(cart: agrs.cart),
       bottomNavigationBar: const CheckoutCard(),
     );
   }
 
-  AppBar buildAppBar(BuildContext context) {
+  AppBar buildAppBar(BuildContext context, CartScreenArguments agrs) {
     return AppBar(
       title: Column(
         children: [
@@ -33,11 +32,17 @@ class CartScreen extends StatelessWidget {
             style: TextStyle(color: Colors.black),
           ),
           Text(
-            "${cart.length} items",
+            "${agrs.cart.length} items",
             style: Theme.of(context).textTheme.caption,
           ),
         ],
       ),
     );
   }
+}
+
+class CartScreenArguments {
+  final List<Cart> cart;
+
+  CartScreenArguments({required this.cart});
 }

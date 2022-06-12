@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/models/Cart.dart';
 // import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:test_app/screens/cart/cart_screen.dart';
 
@@ -9,7 +10,10 @@ import 'search_field.dart';
 class HomeHeader extends StatelessWidget {
   const HomeHeader({
     Key? key,
+    required this.cart,
   }) : super(key: key);
+
+  final List<Cart> cart;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,12 @@ class HomeHeader extends StatelessWidget {
           SearchField(),
           IconBtnWithCounter(
             svgSrc: "assets/icons/Cart Icon.svg",
-            press: () => Navigator.pushNamed(context, CartScreen.routeName),
+            press: () => Navigator.pushNamed(
+              context,
+              // CartScreen.routeName
+              CartScreen.routeName,
+              arguments: CartScreenArguments(cart: cart),
+            ),
           ),
           IconBtnWithCounter(
             svgSrc: "assets/icons/Bell.svg",

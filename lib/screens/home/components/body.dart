@@ -34,7 +34,7 @@ class _BodyState extends State<Body> {
         child: Column(
           children: [
             SizedBox(height: getProportionateScreenHeight(20)),
-            HomeHeader(),
+            HomeHeader(cart: _cardList),
             SizedBox(height: getProportionateScreenWidth(10)),
             DiscountBanner(),
             Categories(),
@@ -52,6 +52,7 @@ class _BodyState extends State<Body> {
     var list = demoProducts;
     setState(() {
       _products = list;
+      _cardList = [];
     });
   }
 }

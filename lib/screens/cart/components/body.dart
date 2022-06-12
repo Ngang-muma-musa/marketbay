@@ -7,8 +7,8 @@ import '../../../size_config.dart';
 import 'cart_card.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
-
+  const Body({Key? key, required this.cart}) : super(key: key);
+  final List<Cart> cart;
   @override
   _BodyState createState() => _BodyState();
 }
@@ -20,15 +20,15 @@ class _BodyState extends State<Body> {
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: ListView.builder(
-        itemCount: demoCarts.length,
+        itemCount: widget.cart.length,
         itemBuilder: (context, index) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Dismissible(
-            key: Key(demoCarts[index].product.id.toString()),
+            key: Key(widget.cart[index].product.id.toString()),
             direction: DismissDirection.endToStart,
             onDismissed: (direction) {
               setState(() {
-                demoCarts.removeAt(index);
+                widget.cart.removeAt(index);
               });
             },
             background: Container(
@@ -44,7 +44,7 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ),
-            child: CartCard(cart: demoCarts[index]),
+            child: CartCard(cart: widget.cart[index]),
           ),
         ),
       ),

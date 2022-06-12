@@ -33,9 +33,9 @@ class PopularProducts extends StatelessWidget {
           child: Row(
             children: [
               ...List.generate(
-                demoProducts.length,
+                products.length,
                 (index) {
-                  if (demoProducts[index].isPopular) {
+                  if (products[index].isPopular) {
                     return ProductCard(product: products[index], cart: cart);
                   }
 
