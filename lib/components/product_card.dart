@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:test_app/models/Cart.dart';
 // import 'package:shop_app/models/Product.dart';
 // import 'package:shop_app/screens/details/details_screen.dart';
 import 'package:test_app/models/Product.dart';
@@ -14,10 +15,12 @@ class ProductCard extends StatelessWidget {
     this.width = 140,
     this.aspectRetio = 1.02,
     required this.product,
+    required this.cart,
   }) : super(key: key);
 
   final double width, aspectRetio;
   final Product product;
+  final List<Cart> cart;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class ProductCard extends StatelessWidget {
           onTap: () => Navigator.pushNamed(
             context,
             DetailsScreen.routeName,
-            arguments: ProductDetailsArguments(product: product),
+            arguments: ProductDetailsArguments(product: product, cart: cart),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

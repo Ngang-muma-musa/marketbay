@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:shop_app/models/Product.dart';
 // import 'package:shop_app/size_config.dart';
 import 'package:test_app/components/default_button.dart';
+import 'package:test_app/models/Cart.dart';
 import 'package:test_app/models/Product.dart';
 import 'package:test_app/size_config.dart';
 
@@ -11,29 +12,37 @@ import 'product_description.dart';
 import 'top_rounded_container.dart';
 import 'product_images.dart';
 
-class Body extends StatelessWidget {
+// the stateful widget
+class Body extends StatefulWidget {
   final Product product;
+  final List<Cart> cart;
 
-  const Body({Key? key, required this.product}) : super(key: key);
+  const Body({Key? key, required this.product, required this.cart})
+      : super(key: key);
 
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        ProductImages(product: product),
+        ProductImages(product: widget.product),
         TopRoundedContainer(
           color: Colors.white,
           child: Column(
             children: [
               ProductDescription(
-                product: product,
+                product: widget.product,
                 pressOnSeeMore: () {},
               ),
               TopRoundedContainer(
                 color: Color(0xFFF6F7F9),
                 child: Column(
                   children: [
-                    ColorDots(product: product),
+                    ColorDots(product: widget.product),
                     TopRoundedContainer(
                       color: Colors.white,
                       child: Padding(
@@ -45,7 +54,21 @@ class Body extends StatelessWidget {
                         ),
                         child: DefaultButton(
                           text: "Add To Cart",
-                          press: () {},
+                          press: () {
+                            setState(() {
+                              if (!widget.cart.contains(widget.product)) {
+                                widget.cart.add(Cart(
+                                    product: widget.product, numOfItem: 1));
+                              } else {
+                                var item = widget.cart.firstWhere((element) =>
+                                    element.product == widget.product);
+                                item.numOfItem++;
+                                // var item =
+                                //     Cart(product: widget.product, numOfItem: 1);
+                                // widget.cart.remove(item);
+                              }
+                            });
+                          },
                         ),
                       ),
                     ),

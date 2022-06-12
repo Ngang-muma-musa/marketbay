@@ -8,7 +8,13 @@ import 'components/check_out_card.dart';
 class CartScreen extends StatelessWidget {
   static String routeName = "/cart";
 
-  const CartScreen({Key? key}) : super(key: key);
+  const CartScreen({
+    Key? key,
+    required this.cart,
+  }) : super(key: key);
+
+  final List<Cart> cart;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +33,7 @@ class CartScreen extends StatelessWidget {
             style: TextStyle(color: Colors.black),
           ),
           Text(
-            "${demoCarts.length} items",
+            "${cart.length} items",
             style: Theme.of(context).textTheme.caption,
           ),
         ],
