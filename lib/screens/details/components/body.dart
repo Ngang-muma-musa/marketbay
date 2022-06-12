@@ -56,16 +56,17 @@ class _BodyState extends State<Body> {
                           text: "Add To Cart",
                           press: () {
                             setState(() {
-                              if (!widget.cart.contains(widget.product)) {
-                                widget.cart.add(Cart(
-                                    product: widget.product, numOfItem: 1));
+                              if (widget.cart.any((element) =>
+                                  element.product.id == widget.product.id)) {
+                                widget.cart
+                                    .firstWhere((element) =>
+                                        element.product.id == widget.product.id)
+                                    .numOfItem++;
                               } else {
-                                var item = widget.cart.firstWhere((element) =>
-                                    element.product == widget.product);
-                                item.numOfItem++;
-                                // var item =
-                                //     Cart(product: widget.product, numOfItem: 1);
-                                // widget.cart.remove(item);
+                                widget.cart.add(Cart(
+                                  product: widget.product,
+                                  numOfItem: 1,
+                                ));
                               }
                             });
                           },
